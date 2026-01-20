@@ -1,16 +1,25 @@
 <html xmlns:th="https://www.thymeleaf.org" >
 <body>
+
+<a th:href="@{/logout}">
+    <button type = "logout">Logout</button>
+</a>
+
+
 <h1>List of Clients</h1>
 
 <table border="1">
     <tr>
         <th>Email</th>
+        <th>Password</th>
         <th>First Name</th>
         <th>Last Name</th>
+
     </tr>
 
     <tr th:each="client : ${clients}">
         <td th:text="${client.email}" />
+        <td th:text="${client.password}" />
         <td th:text="${client.name}" />
         <td th:text="${client.prename}" />
     </tr>
@@ -22,6 +31,10 @@
     <div>
         <label>Email: </label>
         <input type="email" th:field="*{email}" required />
+    </div>
+    <div>
+        <label>Password: </label>
+        <input type="text" th:field="*{password}" />
     </div>
     <div>
         <label>Last Name: </label>

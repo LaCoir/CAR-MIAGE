@@ -7,11 +7,9 @@ import jakarta.persistence.Id;
 public class Client {
     @Id
     private String email;
-
-
     private String name;
     private String prename;
-
+    private String password;
     // Constructor chưa có tham số (default constructor) là bắt buộc
     public Client() {
     }
@@ -46,5 +44,13 @@ public class Client {
 
         public void setEmail(String email) {
             this.email = email;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
         }
     }

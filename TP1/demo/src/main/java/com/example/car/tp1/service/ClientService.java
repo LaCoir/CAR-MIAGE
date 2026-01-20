@@ -10,7 +10,9 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRespository;
     // Spring tự động tiêm ClientRepository vào đây (Constructor Injection)
-    // @Autowired là tùy chọn ở đây nếu chỉ có 1 constructor, nhưng viết vào cho rõ
+    public Client findByEmailAndPassword(String email, String password) {
+        return clientRespository.findByEmailAndPassword(email, password);
+    }
 
     public void createClient(Client client) {
        clientRespository.save(client);
