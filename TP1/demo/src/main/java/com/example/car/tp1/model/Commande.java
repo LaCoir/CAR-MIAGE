@@ -5,15 +5,17 @@ import jakarta.persistence.*;
 @Entity
 public class Commande {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String titre;
-
-    @OneToMany
-    List<Ligne> lignes;
+    private String title;
+    private String content;
+    private Float number;
+    private Double price;
 
     @ManyToOne
-    Client client;
+    public Client client;
 
+    public Commande(){}
     public Commande(Client client) {
         this.client = client;
     }
@@ -34,19 +36,36 @@ public class Commande {
         this.id = id;
     }
 
-    public String getTitre() {
-        return titre;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitre(String titre) {
-        this.titre = titre;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public List<Ligne> getLignes() {
-        return lignes;
+    public String getContent() {
+        return content;
     }
 
-    public void setLignes(List<Ligne> lignes) {
-        this.lignes = lignes;
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Float getNumber() {
+
+        return number;
+    }
+
+    public void setNumber(Float number) {
+        this.number = number;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }
