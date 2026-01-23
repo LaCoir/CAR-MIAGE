@@ -1,0 +1,45 @@
+<html xmlns:th="https://www.thymeleaf.org" >
+<body>
+<h1>Espace Commande</h1>
+
+<div th:if="${client != null}">
+    <p>Client : <span th:text="${client.nom}">Nom</span></p>
+</div>
+
+<hr/>
+
+<form th:action="@{/commande/create}" method="post">
+    <label>Nom de la commande :</label>
+    <input type="text" name="titre"  required />
+
+    <button type="submit">Créer</button>
+</form>
+
+<hr/>
+
+<h3>Mes Commandes</h3>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Titre</th>
+        <th>Detail</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="c : ${commandes}">
+        <td th:text="${c.id}"></td>
+        <td th:text="${c.titre}"></td>
+        <td>
+            <a th:href="@{/commande/detail(commandeId=${c.id})}">Voir détails</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+<br/>
+<a th:href="@{/disconnect}">Déconnexion</a>
+</body>
+</html>
