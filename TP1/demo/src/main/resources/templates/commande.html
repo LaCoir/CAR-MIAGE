@@ -1,56 +1,81 @@
-<html xmlns:th="https://www.thymeleaf.org" >
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order Management</title>
+</head>
 <body>
-<h1>Orders </h1>
 
-<div th:if="${client != null}">
-    <p>Client: <span th:text="${client.name}">Name</span></p>
+<h1>Orders Management</h1>
+
+<div th:if="${clientInfo != null && clientInfo.email != null}">
+    <h3 style="color: blue;">
+        Creating order for: <span th:text="${clientInfo.prename} + ' ' + ${clientInfo.name}">Name</span>
+    </h3>
+    <p>Email: <span th:text="${clientInfo.email}"></span></p>
+</div>
+<div th:if="${clientInfo == null || clientInfo.email == null}">
+    <h3 style="color: grey;">Creating order for: No Client Selected (Freedom Order)</h3>
 </div>
 
 <hr/>
 
-<form th:action="@{/home/commande/save}" th:object="${newCommande}" method="post">
+<form th:action="@{/home/commande/save(clientId=${clientInfo != null ? clientInfo.email : ''})}"
+      th:object="${newCommande}"
+      method="post">
+
+    <input type="hidden" th:field="*{client}" />
+
     <div>
         <label>Title: </label>
-        <input type="title" th:field="*{title}" required />
+        <input type="text" th:field="*{title}" required placeholder="Enter title..." />
     </div>
+
     <div>
         <label>Detail: </label>
-        <input type="content" th:field="*{content}" />
+        <input type="text" th:field="*{content}" placeholder="Description..." />
     </div>
+
     <div>
         <label>Quantity: </label>
-        <input type="number" th:field="*{number}" />
+        <input type="number" th:field="*{number}" min="1" />
     </div>
+
     <div>
         <label>Price: </label>
-        <input type="price" th:field="*{price}" />
+        <input type="number" step="0.1" th:field="*{price}" placeholder="0.0" />
     </div>
+
+    <br>
     <button type="submit">Save Orders</button>
 </form>
 
+<hr/>
+
 <h3>List Of Orders</h3>
 
-<table border="1">
-
+<table border="1" cellpadding="10">
+    <thead>
     <tr>
         <th>ID</th>
-        <th>Title</th>
+        <th>Client</th> <th>Title</th>
         <th>Detail</th>
-        <th>Quantiy</th>
+        <th>Quantity</th>
         <th>Price</th>
-
     </tr>
+    </thead>
+    <tbody>
+    <tr th:each="c : ${commande}">
+        <td th:text="${c.id}"></td>
 
-    <tr th:each="commande: ${commande}">
-        <td th:text="${commande.ID}" />
-        <td th:text="${commande.title}" />
-        <td th:text="${commande.content}" />
-        <td th:text="${commande.number}" />
-        <td th:text="${commande.price}" />
+        <td th:text="${c.client != null} ? ${c.client.email} : 'Free Order'"></td>
+
+        <td th:text="${c.title}"></td>
+        <td th:text="${c.content}"></td>
+        <td th:text="${c.number}"></td>
+        <td th:text="${c.price}"></td>
     </tr>
+    </tbody>
 </table>
 
-
-<br/>
 </body>
 </html>

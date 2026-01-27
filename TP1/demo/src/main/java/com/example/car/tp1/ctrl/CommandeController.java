@@ -4,6 +4,7 @@ import com.example.car.tp1.model.Client;
 import com.example.car.tp1.model.Commande;
 import com.example.car.tp1.service.ClientService;
 import com.example.car.tp1.service.CommandeService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,26 +23,39 @@ public class CommandeController {
     @Autowired
     private ClientService clientService;
 
-    @GetMapping("/home/commande/")
-    public ModelAndView commandeHome(@RequestParam(name = "clientId", required = false) String email) {
+    @GetMapping("/commande")
+    public ModelAndView commandeHome(@RequestParam(name = "clientId", required = false) String email, HttpSession httpSession) {
         var currentClients = new Client(); // tao client rong mac dinh neu ko commande se loi
-        var commande = commandeService.readAllCommande(); //list commande
         var emptyCommande = new Commande(); // để binding form
+        var commande = commandeService.readAllCommande(); //list commande
+
         if (email != null && !email.isEmpty()) {
-            Client client = clientService.findByEmail(email);
-            if (client != null) {
-                currentClients = client;
-                emptyCommande.setClient(client);
+            Client found = clientService.findByEmail(email);
+            if (found != null) {
+                currentClients = found;
+                emptyCommande.setClient(found);
             }
         }
 
-        var modelData = Map.of("commande", commande, "newCommande", emptyCommande, "clients", currentClients);
+        if (currentClients.getEmail() == null){
+           Client loggedInClient = (Client) httpSession.getAttribute("loggedIn");
+              if (loggedInClient != null) {
+                    currentClients = loggedInClient;
+                    emptyCommande.setClient(loggedInClient);
+              }
+        }
+        if (currentClients.getEmail() != null){
+            emptyCommande.setClient(currentClients);
+        }
+
+
+        var modelData = Map.of("commande", commande, "newCommande", emptyCommande, "clientInfo", currentClients);
         return new ModelAndView("commande", modelData);
     }
 
-    @PostMapping("/home/commande/save")
+    @PostMapping("/commande/save")
     public String saveCommande(@ModelAttribute Commande commande) {
         commandeService.createCommande(commande);
-        return "redirect:/home/commande"; // sau khi lưu xong quay về trang home
+        return "redirect:/commande"; // sau khi lưu xong quay về trang home
     }
 }

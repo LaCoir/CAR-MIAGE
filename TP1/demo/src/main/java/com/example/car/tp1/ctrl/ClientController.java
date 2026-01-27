@@ -38,7 +38,7 @@ public class ClientController {
             httpSession.setAttribute("loggedIn", foundClient);
             return new ModelAndView("redirect:/commande");
         } else {
-            var modelData = Map.of("client", client, "error", "Invalid email or password");
+            var modelData = Map.of("client", client, "newClient", new Client(), "error", "Invalid email or password");
             return new ModelAndView("login", modelData);
         }
     }
