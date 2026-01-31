@@ -18,10 +18,18 @@ public class CommandeService {
         commandeRepository.save(commande);
     }
 
-   public Optional<Commande> getCommandebyId(Long id) {
-       return commandeRepository.findById(id);
-   }
+    public Commande getCommandeById(Long id) {
+        return commandeRepository.findById(id).orElse(null);
+    }
     public Iterable<Commande> readAllCommande() {return commandeRepository.findAll();
+    }
+
+    public java.util.List<Commande> getCommandesByClient(Client client) {
+        return commandeRepository.findByClient(client);
+    }
+
+    public void deleteCommande(Long id) {
+        commandeRepository.deleteById(id);
     }
 
 }

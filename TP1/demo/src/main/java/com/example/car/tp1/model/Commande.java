@@ -2,6 +2,8 @@ package com.example.car.tp1.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Commande {
     @Id
@@ -11,6 +13,10 @@ public class Commande {
     private String content;
     private Float number;
     private Double price;
+
+
+    @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Ligne> lignes;
 
     @ManyToOne
     public Client client;
@@ -43,29 +49,12 @@ public class Commande {
     public void setTitle(String title) {
         this.title = title;
     }
-
-    public String getContent() {
-        return content;
+    public List<Ligne> getLignes() {
+        return lignes;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setLignes(List<Ligne> lignes) {
+        this.lignes = lignes;
     }
 
-    public Float getNumber() {
-
-        return number;
-    }
-
-    public void setNumber(Float number) {
-        this.number = number;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
 }
