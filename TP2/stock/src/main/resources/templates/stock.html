@@ -1,0 +1,20 @@
+<html xmlns:th="https://www.thymeleaf.org" >
+<body>
+<h1>Stock</h1>
+<table border="1">
+    <th>Name</th><th>Quantity</th>
+    <tr th:each="stock : ${stocks}">
+        <td th:text="${stock.name}" />
+        <td th:text="${stock.quantity}" />
+
+    </tr>
+</table>
+<hr/>
+<form action="/home/create"
+      method="POST">
+    Name <input name="nom">
+    Quantity <input name="quantity">
+    <input type="SUBMIT">
+</form>
+</body>
+</html>

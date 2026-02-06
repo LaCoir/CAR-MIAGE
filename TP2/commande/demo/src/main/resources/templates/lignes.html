@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order Detail</title>
+</head>
+<body>
+
+<h1>Order Detail: <span th:text="${commandeFather.title}" style="color: blue;">Title</span></h1>
+<a th:href="@{/commande}"> < Return to Order's List</a> | <a th:href="@{/commande/print(id=${commandeFather.id})}">Print</a>
+<hr/>
+
+<form th:action="@{/commande/ligne/save}" th:object="${newLigne}" method="post">
+
+    <input type="hidden" th:field="*{commande}" />
+
+    <div>
+        <label>Product Name: </label>
+        <input type="text" th:field="*{content}" required />
+    </div>
+
+    <div>
+        <label>Quantity: </label>
+        <input type="number" th:field="*{quantity}" min="1" value="1" />
+    </div>
+
+    <div>
+        <label>Price: </label>
+        <input type="number" step="0.1" th:field="*{price}" />
+    </div>
+
+    <button type="submit">Add Product</button>
+</form>
+
+<hr/>
+
+<h3>Product List</h3>
+<table border="1">
+    <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+    </tr>
+    <tr th:each="item : ${listLignes}">
+        <td th:text="${item.content}"></td>
+        <td th:text="${item.quantity}"></td>
+        <td th:text="${item.price} + ' €'"></td>
+    </tr>
+</table>
+
+</body>
+</html>

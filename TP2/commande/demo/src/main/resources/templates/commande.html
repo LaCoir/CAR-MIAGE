@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order Management</title>
+</head>
+<body>
+
+<a th:if="${clientInfo != null && clientInfo.email != null}" th:href="@{/logout}">Logout</a>
+
+<h1>Orders Management</h1>
+
+<div th:if="${clientInfo != null && clientInfo.email != null}">
+    <h3 style="color: blue;">
+        Creating order for: <span th:text="${clientInfo.prename} + ' ' + ${clientInfo.name}">Name</span>
+    </h3>
+    <p>Email: <span th:text="${clientInfo.email}"></span></p>
+</div>
+<div th:if="${clientInfo == null || clientInfo.email == null}">
+    <h3 style="color: grey;">Creating order for: No Client Selected (Freedom Order)</h3>
+</div>
+
+<hr/>
+
+<form th:action="@{/commande/save(clientId=${clientInfo != null ? clientInfo.email : ''})}"
+      th:object="${newCommande}"
+      method="post">
+
+    <input type="hidden" th:field="*{client}" />
+
+    <div>
+        <label>Title: </label>
+        <input type="text" th:field="*{title}" required placeholder="Enter title..." />
+    </div>
+
+    <br>
+    <button type="submit">Save Orders</button>
+</form>
+
+<hr/>
+
+<h3>List Of Orders</h3>
+
+<table border="1" cellpadding="10">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Client</th> <th>Title</th>
+        <th>Detail</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="c : ${commande}">
+        <td th:text="${c.id}"></td>
+
+        <td th:text="${c.client != null} ? ${c.client.email} : 'Free Order'"></td>
+
+        <td th:text="${c.title}"></td>
+        <td><a th:href="@{/commande/ligne(commandeId=${c.id})}">Detail</a> | <a th:href="@{/commande/print(id=${c.id})}">Print</a> | <a th:href="@{/commande/delete(id=${c.id})}">Delete</a></td>
+
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
