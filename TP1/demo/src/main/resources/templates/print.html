@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Print Order</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .no-print { display: none; }
+        @media print {
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Order: <span th:text="${commande.title}"></span></h1>
+<p>Client: <span th:text="${commande.client != null} ? ${commande.client.prename} + ' ' + ${commande.client.name} + ' (' + ${commande.client.email} + ')' : 'Free Order'"></span></p>
+
+<h3>Order Lines</h3>
+<table border="1" style="width: 100%;">
+    <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+    </tr>
+    <tr th:each="item : ${lignes}">
+        <td th:text="${item.content}"></td>
+        <td th:text="${item.quantity}"></td>
+        <td th:text="${item.price} + ' €'"></td>
+    </tr>
+</table>
+
+<div class="no-print">
+    <button onclick="window.print()">Print</button>
+    <a th:href="@{/commande}">Back to Orders</a>
+</div>
+
+</body>
+</html>
