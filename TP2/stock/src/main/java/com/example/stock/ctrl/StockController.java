@@ -1,8 +1,6 @@
 package com.example.stock.ctrl;
 
-import com.example.stock.repository.StockRepository;
 import com.example.stock.service.StockService;
-import com.example.stock.model.Stock;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,8 +22,8 @@ public class StockController {
         var model = Map.of("stock", stocks);
         return new ModelAndView("stock", model);
     }
-    @PostMapping("/home/create")
-    public RedirectView createStock(String name, Float quantity){
+    @PostMapping("/home/load")
+    public RedirectView loadStock(String name, Float quantity){
         stockService.createStock(name, quantity);
         return new RedirectView("/home");
     }
